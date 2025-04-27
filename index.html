@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações na Aprovação de AL</title>
+    <link rel="icon" href="https://i.postimg.cc/MG7qzW4x/emote.png" type="image/x-icon">
+    <style>
+        /* Modo Escuro */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1, h2 {
+            color: #bb86fc;
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin: 20px 0 20px 20px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, button, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #6200ea;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4500b5;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #757575;
+        }
+
+        footer img {
+            margin-top: 10px;
+        }
+
+        footer a {
+            color: #e0e0e0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #bb86fc;
+        }
+
+        .highlight {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Informações na Aprovação de AL</h1>
+        <p>
+            Pedimos que sejam preenchidos o <strong>Nome</strong>, <strong>ID do Discord</strong> e <strong>Data de Nascimento</strong> ao aprovar uma AL.
+        </p>
+        <p>
+            Esses dados são importantes para facilitar a verificação de histórico, principalmente porque ultimamente têm ocorrido vários casos de pessoas utilizando múltiplos Discords com AL aprovada no servidor, o que dificulta o controle.
+        </p>
+        <h2>Antes de aprovar ou reprovar:</h2>
+        <ul>
+            <li>Pesquise o nome e/ou a data de nascimento nos Discords de leitura de AL, aprovados e reprovados.</li>
+            <li>Se possível, também realize a busca no Discord da cidade para verificar se já existe algum registro.</li>
+            <li>
+                <span class="highlight">É importante lembrar que podem existir pessoas diferentes com o mesmo nome ou data de nascimento.</span>
+                Entretanto, essa pesquisa garante uma análise mais detalhada do caso.
+            </li>
+            <li>Caso identifique algo relevante, registre uma observação ou reporte o caso para revisão.</li>
+        </ul>
+        <p>
+            Esses passos são fundamentais para manter a organização e a segurança do servidor.
+        </p>
+
+        <!-- Formulário -->
+        <h2>Preencha as Informações:</h2>
+        <form id="al-form">
+            <label for="nomeSobrenome">Nome e Sobrenome:</label>
+            <input type="text" id="nomeSobrenome" placeholder="Exemplo: João Silva" required>
+            
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input type="text" id="dataNascimento" placeholder="Exemplo: 01/01/2000 ou 2000-01-01" required>
+            
+            <label for="idDiscord">ID do Discord:</label>
+            <input type="text" id="idDiscord" placeholder="Exemplo: 615136384784662540" required>
+            
+            <label for="rumo">Rumo:</label>
+            <input type="text" id="rumo" placeholder="Exemplo: rumo" required>
+
+            <label for="observacao">Observação (Opcional):</label>
+            <input type="text" id="observacao" placeholder="Exemplo: Motivo">
+            
+            <button type="button" onclick="gerarResultado()">Gerar Resultado</button>
+        </form>
+        
+        <h2>Resultado:</h2>
+        <textarea id="resultado" rows="5" readonly></textarea>
+    </div>
+
+    <footer>
+        <img src="https://i.postimg.cc/WzSNyqxY/Jacky-Confuso.png" alt="Placeholder Image" width="150">
+        <p>© 2025 - Todos os direitos reservados. Feito com ❤, ajuda de IA e um pouquinho de preguiça por <a href="https://jackymayers.github.io/" target="_blank">Jacky Mayers</a> !</p>
+    </footer>
+
+    <script>
+        function formatarData(data) {
+            // Remove todos os caracteres não numéricos
+            const limpaData = data.replace(/\D/g, "");
+            
+            // Verifica o tamanho da string limpa e formata para dd/mm/aaaa
+            if (limpaData.length === 8) {
+                return `${limpaData.slice(0, 2)}/${limpaData.slice(2, 4)}/${limpaData.slice(4)}`;
+            }
+            return "Data inválida";
+        }
+
+        function calcularIdade(data) {
+            const hoje = new Date();
+            const [dia, mes, ano] = data.split('/').map(Number);
+
+            const nascimento = new Date(ano, mes - 1, dia);
+            let idade = hoje.getFullYear() - nascimento.getFullYear();
+            const mesAtual = hoje.getMonth();
+            const diaAtual = hoje.getDate();
+
+            // Ajuste se o aniversário ainda não aconteceu este ano
+            if (mesAtual < mes - 1 || (mesAtual === mes - 1 && diaAtual < dia)) {
+                idade--;
+            }
+            return idade;
+        }
+
+        function gerarResultado() {
+            const nomeSobrenome = document.getElementById("nomeSobrenome").value.trim();
+            const dataNascimento = document.getElementById("dataNascimento").value.trim();
+            const idDiscord = document.getElementById("idDiscord").value.trim();
+            const rumo = document.getElementById("rumo").value.trim();
+            const observacao = document.getElementById("observacao").value.trim();
+
+            const dataFormatada = formatarData(dataNascimento);
+
+            if (dataFormatada === "Data inválida") {
+                alert("Por favor, insira uma data de nascimento válida.");
+                return;
+            }
+
+            const idade = calcularIdade(dataFormatada);
+
+            let resultado = `${nomeSobrenome} - ${dataFormatada} (${idade} anos) - ${idDiscord} | <@${idDiscord}> - ${rumo}`;
+            
+            // Adiciona a observação apenas se o campo for preenchido
+            if (observacao) {
+                resultado += `\nObservação: ${observacao}`;
+            }
+
+            document.getElementById("resultado").value = resultado;
+        }
+    </script>
+</body>
+</html>
