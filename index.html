@@ -93,11 +93,20 @@
             color: #ffcc00;
             font-weight: bold;
         }
+
+        .instructions {
+            background-color: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Informações AL</h1>
+        <h1>Informações na Aprovação de AL</h1>
         <p>
             Pedimos que sejam preenchidos o <strong>Nome</strong>, <strong>ID do Discord</strong> e <strong>Data de Nascimento</strong> ao aprovar uma AL.
         </p>
@@ -118,29 +127,36 @@
             Esses passos são fundamentais para manter a organização e a segurança do servidor.
         </p>
 
+        <div class="instructions">
+            <h2>Como usar este site:</h2>
+            <p>
+                Basta copiar os dados necessários no Discord, como nome, data de nascimento, ID e rumo, e colar nos campos apropriados abaixo. Em seguida, clique no botão <strong>"Gerar Resultado"</strong>. O site irá criar automaticamente o relatório formatado, pronto para ser copiado e colado de volta no Discord com todas as informações organizadas!
+            </p>
+        </div>
+
         <!-- Formulário -->
         <h2>Preencha as Informações:</h2>
         <form id="al-form">
             <label for="nomeSobrenome">Nome e Sobrenome:</label>
-            <input type="text" id="nomeSobrenome" placeholder="Exemplo: Nome Sobrenome" required>
+            <input type="text" id="nomeSobrenome" placeholder="Exemplo: João Silva" required>
             
             <label for="dataNascimento">Data de Nascimento:</label>
-            <input type="text" id="dataNascimento" placeholder="Exemplo: dd/mm/aaaa" required>
+            <input type="text" id="dataNascimento" placeholder="Exemplo: 01/01/2000 ou 2000-01-01" required>
             
             <label for="idDiscord">ID do Discord:</label>
-            <input type="text" id="idDiscord" placeholder="Exemplo: 123456798123" required>
+            <input type="text" id="idDiscord" placeholder="Exemplo: 615136384784662540" required>
             
             <label for="rumo">Rumo:</label>
-            <input type="text" id="rumo" placeholder="Exemplo: Rumo" required>
+            <input type="text" id="rumo" placeholder="Exemplo: rumo" required>
 
             <label for="observacao">Observação (Opcional):</label>
-            <input type="text" id="observacao" placeholder="Exemplo: Motivo">
+            <textarea id="observacao" rows="4" placeholder="Exemplo: Informação&#10;Informação&#10;Informação"></textarea>
             
             <button type="button" onclick="gerarResultado()">Gerar Resultado</button>
         </form>
         
         <h2>Resultado:</h2>
-        <textarea id="resultado" rows="5" readonly></textarea>
+        <textarea id="resultado" rows="6" readonly></textarea>
     </div>
 
     <footer>
@@ -194,9 +210,9 @@
 
             let resultado = `${nomeSobrenome} - ${dataFormatada} (${idade} anos) - ${idDiscord} | <@${idDiscord}> - ${rumo}`;
             
-            // Adiciona a observação apenas se o campo for preenchido
+            // Adiciona a observação exatamente como foi colada
             if (observacao) {
-                resultado += `\nObservação: ${observacao}`;
+                resultado += `\nObservação:\n${observacao}`;
             }
 
             document.getElementById("resultado").value = resultado;
